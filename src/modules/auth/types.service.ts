@@ -20,3 +20,7 @@ export type SignInReturn = {
     token: string;
     user: User;
 }
+
+export type AuthenticateProps = {
+    token: string;
+}

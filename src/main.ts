@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
+
 import { GlobalExceptionsFilter } from './cores/exeption/global';
 import { AuthModule } from './modules/auth/module';
  
@@ -14,6 +15,7 @@ import { AuthModule } from './modules/auth/module';
     },
   ]
 })
+
 class AppModule {}
 
 async function bootstrap() {

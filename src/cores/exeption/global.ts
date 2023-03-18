@@ -10,7 +10,7 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
 
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
-      const message = exception.message;
+      const message = exception.message || 'Internal server error';
       response.status(status).json({
         message,
       });
