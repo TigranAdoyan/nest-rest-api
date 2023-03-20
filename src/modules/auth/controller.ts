@@ -1,11 +1,10 @@
-import { Controller, HttpCode, Get, Post, Body, UseInterceptors, UseGuards } from '@nestjs/common';
-import { SignUpReqBody, SignInReqBody } from './types.ctrl';
+import { Controller, Req, Request, HttpCode, Get, Post, Body, UseInterceptors, UseGuards } from '@nestjs/common';
+import { SignUpReqBody, SignInReqBody } from './controller.types';
 import { AuthService } from './services/auth';
 import { ValidatorIntersepter } from '../../cores/intersepters/validator';
 import { AuthMiddleware } from '../../cores/middlewares/auth';
 import validator from './validation.schema';
 
-@UseGuards(AuthMiddleware)
 @Controller("auth")
 @UseInterceptors(new ValidatorIntersepter(validator))
 export class AuthController {
@@ -20,6 +19,7 @@ export class AuthController {
       username: body.username,
       email: body.email,
       password: body.password,
+      age: body.age
     });
   }
 
@@ -34,13 +34,15 @@ export class AuthController {
 
   @HttpCode(200)
   @Post("sign-out")
-  SignOut() {
-    return this.authService.signOut();
+  SignOut(@Req() req: Request) {
+    return this.authService.signOut({
+      user: req.user
+    });
   }
 
   @HttpCode(200)
   @Get("profile")
-  AuthData() {
-    return this.authService.getAccountInfo();
+  Profile(@Req() req: Request) {
+    return req.user;
   }
 }

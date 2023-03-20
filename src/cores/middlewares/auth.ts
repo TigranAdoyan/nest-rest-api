@@ -5,11 +5,11 @@ import { AuthService } from '../../modules/auth/services/auth';
 export class AuthMiddleware implements NestMiddleware {
     constructor (private readonly authService: AuthService) {}
 
-    use(req: Request, res: Response, next: (error?: Error) => void) {
-        console.log("saefsef")
-        this.authService.authenticate({
+    async use(req: Request, res: Response, next: (error?: Error) => void) {
+        req.user = await this.authService.authenticate({
             token: req.headers["x-auth-token"],
-        });
-        next();
+        });  
+        console.log(req.user);
+        next() 
     }
 }
