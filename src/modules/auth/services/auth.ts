@@ -1,4 +1,3 @@
-import * as uuid from 'uuid';
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt';
@@ -34,7 +33,7 @@ export class AuthService {
       .where('BINARY users.username = :username', { username: props.username })
       .getOne();
 
-    if (!user) throw new HttpException("username/password is wrong", HttpStatus.BAD_REQUEST)
+    if (!user || user.password != props.password) throw new HttpException("username/password is wrong", HttpStatus.BAD_REQUEST)
     const token = await this.generateToken(user.id);
     this.authRedis.set(user.id.toString(), user);
 
